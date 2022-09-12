@@ -1,9 +1,37 @@
 import express from "express";
-import { router } from "./routes";
+import cors from "cors";
+import { userRouter } from "./routes/UsersRoute";
 
-const app = express();
+class App {
+    private express: express.Application;
+    private readonly port = 3333;
 
-app.use(express.json());
-app.use(router);
+    constructor() {
+        this.express = express();
+        this.middlewares();
+        this.routes();
+        // this.listen();
+    }
 
-export { app };
+    public getApp(): express.Application {
+        this.listen();
+        return this.express;
+    }
+
+    private middlewares(): void {
+        this.express.use(express.json());
+        this.express.use(cors());
+    }
+
+    private listen(): void {
+        this.express.listen(this.port, () => {
+            console.log(` Servidor Iniciado na porta ${this.port}`);
+        });
+    }
+
+    private routes(): void {
+        this.express.use(userRouter);
+    }
+}
+
+export { App };

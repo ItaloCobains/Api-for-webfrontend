@@ -12,7 +12,9 @@ export class CreateUserController {
                 email,
                 password,
             });
-            return res.status(201).send();
+            return res.status(201).json({
+                message: "Success",
+            });
         } catch (err) {
             return res.status(400).json({
                 message: err.message || "Unexpected error.",
